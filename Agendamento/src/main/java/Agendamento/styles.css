@@ -1,0 +1,23 @@
+.root {
+    -fx-font-size: 14px;
+}
+
+.label {
+    -fx-font-size: 14px;
+}
+
+.text-field {
+    -fx-font-size: 14px;
+}
+
+.choice-box {
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-font-size: 14px;
+}
+
+.date-picker {
+    -fx-font-size: 14px;
+}
