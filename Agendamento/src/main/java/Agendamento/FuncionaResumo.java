@@ -31,7 +31,7 @@ public class FuncionaResumo extends Application {
 
         BorderPane root = new BorderPane();
 
-        Button cadastrarButton = new Button("Cadastrar Viagem");
+        Button cadastrarButton = new Button("VER Viagem");
         Button consultarButton = new Button("Consultar Viagens");
 
         VBox optionsBox = new VBox(10, cadastrarButton, consultarButton);
