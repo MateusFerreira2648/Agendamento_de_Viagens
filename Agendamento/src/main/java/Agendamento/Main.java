@@ -333,7 +333,7 @@ public class Main extends Application {
 
         root.setCenter(vBox);
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 600, 500);
         stage.setScene(scene);
         stage.setTitle("Resumo do Cadastro");
         stage.showAndWait();
