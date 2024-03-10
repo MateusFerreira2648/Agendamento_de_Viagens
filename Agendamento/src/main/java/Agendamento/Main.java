@@ -24,17 +24,21 @@ import java.util.regex.Pattern;
 public class Main extends Application {
 
     private Map<LocalDate, Viagem> viagens;
+    private CadastroMotorista cadastroMotorista;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         viagens = new HashMap<>();
+        CadastroMotorista cadastroMotorista = new CadastroMotorista();
 
         BorderPane root = new BorderPane();
 
         Button cadastrarButton = new Button("Cadastrar Viagem");
         Button consultarButton = new Button("Consultar Viagens");
+        Button cadastrarMotoristaButton = new Button("Cadastrar Motorista");
+        cadastrarMotoristaButton.setOnAction(event -> cadastroMotorista.mostrarTelaCadastroMotorista());
 
-        VBox optionsBox = new VBox(10, cadastrarButton, consultarButton);
+        VBox optionsBox = new VBox(10, cadastrarButton, consultarButton, cadastrarMotoristaButton);
         optionsBox.setPadding(new Insets(10));
         optionsBox.setStyle("-fx-alignment: center;");
 
@@ -43,17 +47,16 @@ public class Main extends Application {
         });
 
         consultarButton.setOnAction(event -> {
-            // Implemente a funcionalidade de consulta aqui
             System.out.println("Consulta de viagens");
         });
 
         root.setCenter(optionsBox);
 
-        Scene scene = new Scene(root, 800, 600); // Tamanho inicial da janela
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm()); // Adicionando um estilo CSS
+        Scene scene = new Scene(root, 800, 600); 
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm()); 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Opções");
-        primaryStage.setMaximized(true); // Janela maximizada por padrão
+        primaryStage.setMaximized(true); 
         primaryStage.show();
     }
 
@@ -70,7 +73,7 @@ public class Main extends Application {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                setDisable(date.isBefore(LocalDate.now())); // Desabilita datas anteriores à atual
+                setDisable(date.isBefore(LocalDate.now()));
             }
         });
 
@@ -78,7 +81,7 @@ public class Main extends Application {
         
         CheckBox acompanhanteCheckBox = new CheckBox("Paciente terá acompanhante");
 
-     // Rótulo para o campo "Nome do Acompanhante"
+
      Label nomeAcompanhanteLabel = new Label("Nome do Acompanhante");
      nomeAcompanhanteLabel.setVisible(false);
      
@@ -91,8 +94,7 @@ public class Main extends Application {
      Label motoristaLabel = new Label("Motorista Designado:");
      motoristaLabel.setVisible(true);
      
-     
-     // Campos do acompanhante
+
      TextField nomeAcompanhanteField = new TextField();
      nomeAcompanhanteField.setPromptText("Nome do Acompanhante:");
      nomeAcompanhanteField.setVisible(false);
@@ -115,7 +117,6 @@ public class Main extends Application {
          rgAcompanhanteField.setVisible(acompanhanteSelecionado);
          cartaoSusAcompanhanteField.setVisible(acompanhanteSelecionado);
 
-         // Limpar os campos se a checkbox for desmarcada
          if (!acompanhanteSelecionado) {
              nomeAcompanhanteField.clear();
              rgAcompanhanteField.clear();
@@ -189,7 +190,6 @@ public class Main extends Application {
             }
             
             mostrarResumoCadastro(viagem, dataSelecionada);
-         // Limpa os campos após o cadastro
             datePicker.setValue(null);
             cartaoSusField.clear();
             nomePacienteField.clear();
@@ -230,18 +230,18 @@ public class Main extends Application {
         grid.add(enderecoPacienteField, 1, 7);
         grid.add(new Label("Observações:"), 3, 6);
         grid.add(observacoesField, 3, 7);
-        observacoesField.setPrefWidth(390); // Defina a largura desejada
-        observacoesField.setPrefHeight(100); // Defina a altura desejada
+        observacoesField.setPrefWidth(390);
+        observacoesField.setPrefHeight(100);
         GridPane.setColumnSpan(observacoesField, 2);
         GridPane.setRowSpan(observacoesField, 2);
         grid.add(motoristaLabel, 0, 7);
         grid.add(motoristaField, 1, 7);
         enderecoPacienteField.visibleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                GridPane.setConstraints(motoristaField, 1, 8); // Define as novas coordenadas para o motoristaField
+                GridPane.setConstraints(motoristaField, 1, 8);
                 GridPane.setConstraints(motoristaLabel, 0, 8);
             } else {
-                GridPane.setConstraints(motoristaField, 1, 7); // Retorna o motoristaField para suas coordenadas originais
+                GridPane.setConstraints(motoristaField, 1, 7);
                 GridPane.setConstraints(motoristaLabel, 0, 7);
             }
         });
@@ -261,7 +261,7 @@ public class Main extends Application {
         bottomBox.setPadding(new Insets(20));
         root.setBottom(bottomBox);
 
-        Scene scene = new Scene(root, 800, 600); // Tamanho inicial da janela
+        Scene scene = new Scene(root, 800, 600); 
         stage.setScene(scene);
         stage.setTitle("Cadastro de Viagens");
         stage.show();

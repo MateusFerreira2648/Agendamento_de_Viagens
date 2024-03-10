@@ -1,37 +1,24 @@
 package Agendamento;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+public class CadastroMotorista {
 
-public class CadastroMotorista extends Application {
+    private Set<String> matriculasCadastradas = new HashSet<>();
 
-    @Override
-    public void start(Stage primaryStage) {
-        BorderPane root = new BorderPane();
-
-        Button cadastrarMotoristaButton = new Button("Cadastrar Motorista");
-
-        cadastrarMotoristaButton.setOnAction(event -> mostrarTelaCadastroMotorista());
-
-        root.setCenter(cadastrarMotoristaButton);
-
-        Scene scene = new Scene(root, 400, 300);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Cadastro de Motoristas");
-        primaryStage.show();
-    }
-
-    private void mostrarTelaCadastroMotorista() {
+    public void mostrarTelaCadastroMotorista() {
         Stage stage = new Stage();
 
         GridPane grid = new GridPane();
@@ -57,8 +44,11 @@ public class CadastroMotorista extends Application {
 
         Button cadastrarButton = new Button("Cadastrar");
         cadastrarButton.setOnAction(event -> {
-            cadastroMotorista(nomeField.getText(), matriculaField.getText(), dataNascimentoPicker.getValue());
-            stage.close();
+            if (validarCampos(nomeField.getText(), matriculaField.getText(), dataNascimentoPicker.getValue())) {
+                cadastroMotorista(nomeField.getText(), matriculaField.getText(), dataNascimentoPicker.getValue());
+                matriculasCadastradas.add(matriculaField.getText());
+                stage.close();
+            }
         });
 
         grid.add(cadastrarButton, 1, 3);
@@ -69,6 +59,30 @@ public class CadastroMotorista extends Application {
         stage.show();
     }
 
+    private boolean validarCampos(String nome, String matricula, LocalDate dataNascimento) {
+        if (nome.isEmpty() || matricula.isEmpty() || dataNascimento == null) {
+            exibirAlerta("Erro", "Todos os campos devem ser preenchidos.");
+            return false;
+        }
+
+        if (!nome.matches("[a-zA-Z]+")) {
+            exibirAlerta("Erro", "O campo 'Nome' deve conter apenas letras.");
+            return false;
+        }
+
+        if (!matricula.matches("[0-9]+")) {
+            exibirAlerta("Erro", "O campo 'Matrícula' deve conter apenas números.");
+            return false;
+        }
+
+        if (matriculasCadastradas.contains(matricula)) {
+            exibirAlerta("Erro", "Matrícula já cadastrada.");
+            return false;
+        }
+
+        return true;
+    }
+
     private void cadastroMotorista(String nome, String matricula, LocalDate dataNascimento) {
         System.out.println("Motorista cadastrado:");
         System.out.println("Nome: " + nome);
@@ -76,7 +90,10 @@ public class CadastroMotorista extends Application {
         System.out.println("Data de Nascimento: " + dataNascimento);
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    private void exibirAlerta(String titulo, String conteudo) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setContentText(conteudo);
+        alert.showAndWait();
     }
 }
